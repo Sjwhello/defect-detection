@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>数据统计</title>
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="https://webapi.amap.com/maps?v=1.4.10&key=e2c992496edd06197f7a82dab43a15cd&plugin=AMap.AdvancedInfoWindow"></script>
+
+</head>
+<body>
+<div id="top">
+    <div id="content">道路数据分析</div>
+</div>
+<div>
+    <form action="/dfile" method="post">
+        <table>
+            <tr>
+                <td>文件路径：</td>
+                <td><input type="text" name="file" th:value="${path!=null}?${path}" style="width: 300px;"></td>
+            </tr>
+        </table>
+        <br>
+        <input type="submit" value="解析数据" class="btn-primary">
+    </form>
+</div>
+
+<div id="gdmap" style='width:800px; height:500px;margin-top: 20px;'>
+
+</div>
+
+<!--<script type="text/javascript">-->
+<!--    const map = new AMap.Map('gdmap', {-->
+<!--        resizeEnable: true,-->
+<!--        zoom: 16-->
+<!--    });-->
+<!--</script>-->
+
+<script type="text/javascript">
+    var str = "[[${str}]]";
+    if(str != null){
+        var len = str.split('-').length;
+        console.log(len)
+        var strList = str.split('-');
+        var first = strList[0].split(';')[0];
+        var latitude = first.split(',')[0];
+        var longitude = first.split(',')[1];
+        console.log(latitude + "," + longitude);
+        var map = new AMap.Map('gdmap', {
+            resizeEnable: true,
+            center: [longitude, latitude],
+            zoom: 16
+        });
+        for (var l = 0; l < len; l++) {
+            var lineArr = new Array();
+            var lineArr2 = new Array();
+            var lineStr = strList[l];
+            var len1 = lineStr.split(';').length;
+            for (var i = 0; i < lineStr.split(';').length - 1; i++) {
+                lineArr[i] = lineStr.split(';')[i];
+
+                lineArr2[i] = new Array();
+                var len2 = lineArr[i].split(',').length;
+                for (var j = 0; j < len2; j++) {
+                    lineArr2[i][j] = lineArr[i].split(',')[len2-j-1];
+                }
+            };
+
+            console.log(lineStr.split(';')[lineStr.split(';').length-1]);
+
+            if (lineStr.split(';')[len1-1] == 0){
+                var polyline = new AMap.Polyline({
+                    path: lineArr2,
+                    strokeColor: '#00FF00',
+                    strokeOpacity: 1,
+                    strokeWeight: 5,
+                    strokeStyle: 'solid',
+                    strokeDasharray: [10, 5],
+                    geodesic: true
+                });
+            }else if(lineStr.split(';')[len1-1] == 1){
+                var polyline = new AMap.Polyline({
+                    path: lineArr2,
+                    strokeColor: '#0000FF',
+                    strokeOpacity: 1,
+                    strokeWeight: 5,
+                    strokeStyle: 'solid',
+                    strokeDasharray: [10, 5],
+                    geodesic: true
+                });
+            }else{
+                var polyline = new AMap.Polyline({
+                    path: lineArr2,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1,
+                    strokeWeight: 5,
+                    strokeStyle: 'solid',
+                    strokeDasharray: [10, 5],
+                    geodesic: true
+                });
+            }
+
+
+            polyline.setMap(map);
+        }
+    }
+</script>
+</body>
+</html>
