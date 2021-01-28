@@ -1,17 +1,16 @@
-body{
-    margin: auto auto;
-    text-align: center;
-}
 #top{
+    text-align: center;
     height: 40px;
     width: 100%;
     background-color: #a08b8b;
-    text-align: center;
-    vertical-align: center;
-    margin: 15px 0px;
-
 }
 #content{
     font-size: 24px;
     color: white;
+}
+#form{
+    margin: 20px;
+}
+#mapdisplay{
+    margin: 10px 20px;
 }
