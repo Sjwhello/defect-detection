@@ -43,9 +43,29 @@ public class FileController {
                 }
 
                 // 获取所有地理位置经纬度，并按照一定时间间隔分组
-                if (contentLine.startsWith("经纬度：")) {//获取地理位置数据
+                /*if (contentLine.startsWith("经纬度：")) {//获取地理位置数据
                     count += 1;
                     String s = contentLine.split("：")[1] + ";";
+                    str.append(s);
+                    if (count % 5 == 0) {
+                        if (count_2 >= 4) {
+                            defectType = 2;
+                        } else if (count_1 >= 3) {
+                            defectType = 1;
+                        }else{
+                            defectType = 0;
+                        }
+                        //System.out.println(defectType);
+                        str.append(defectType+"-");
+                        count = 0;
+                        count_1 = 0;
+                        count_2 = 0;
+                    }
+                }*/
+                if (contentLine.startsWith("位置：")) {//获取地理位置数据
+                    count += 1;
+                    String[] split = contentLine.split(",")[1].split("&");
+                    String s = split[0].split(":")[1] + "," + split[1].split(":")[1]+";";
                     str.append(s);
                     if (count % 5 == 0) {
                         if (count_2 >= 4) {
